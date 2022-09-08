@@ -1,0 +1,1 @@
+Uses Java8 Stream library to implement a Monte Carlo Dice Roll simulation to calculate the success probabilities of the various possible Heart roll conditions. Currently prints all possible configuration in low and high fidelity simulations to the command line.
