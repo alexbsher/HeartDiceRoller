@@ -1,4 +1,5 @@
 package diceRoller;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,10 +13,12 @@ public class DiceRoller {
 
 	private int m_numRolls;
 	private Random m_random;
+	private Map<Integer, Map<List<Integer>, Double>> m_diceRolls;
 
 	public DiceRoller(int numRolls) {
 		m_numRolls = numRolls;
 		m_random = new Random();
+		m_diceRolls = new HashMap<>();
 	}
 
 	private IntFunction<List<Integer>> nDiceRolls(int n) {
@@ -34,8 +37,9 @@ public class DiceRoller {
 	}
 
 	public Double getProbability(int nDice, int nHighestGone) {
-		Map<List<Integer>, Double> rolls = diceRolls(nDice);
-		return rolls.entrySet().stream().filter(testRollCondition(nHighestGone)).collect(Collectors.summingDouble(entry -> entry.getValue()));
+		Map<List<Integer>, Double> rolls = m_diceRolls.computeIfAbsent(nDice, (dice) -> diceRolls(dice));
+		return rolls.entrySet().stream().filter(testRollCondition(nHighestGone))
+				.collect(Collectors.summingDouble(entry -> entry.getValue()));
 	}
 	
 	public static void main(String[] args) {
